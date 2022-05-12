@@ -1,4 +1,4 @@
-from view import View, MainView
+from View.view import *
 
 
 class CadastrarView(View):

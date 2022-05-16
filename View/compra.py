@@ -1,4 +1,7 @@
+import tkinter
+
 from View.view import *
+import tk_tools
 
 
 class CompraView(View):
@@ -18,7 +21,11 @@ class CompraView(View):
     def informarCompra(self):
         self.init_frame('Informar Compra')  # Inicializa o frame
         self.criar_dropdown()  # Cria as entradas
-
+        entry_grid = tk_tools.EntryGrid(self.root, 4, ['QTD', 'ITEM', 'DESCRICAO', 'VALOR'])
+        entry_grid.place(x=0, y=110)
+        for i in range (0, 10):
+            entry_grid.add_row()
+        print(entry_grid)
         self.criar_botao('CANCELAR', 240, 10, self.cancelar)
         self.criar_botao('SALVAR', 240, 180, None)
 

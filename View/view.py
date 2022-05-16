@@ -22,14 +22,13 @@ class MoldView(tk.Frame):
         self.root.geometry(
             "%dx%d+%d+%d"
             % (
-                350,
+                650,
                 350,
                 ((self.root.winfo_screenwidth() / 2) - 100),
                 ((self.root.winfo_screenheight() / 2) - 200),
             )
         )
         self.root.configure(background=self.co0)
-        self.root.resizable(False, False)
         self.init_frame(self.title_h1)
 
     def init_frame(self, title_h1):
@@ -38,7 +37,7 @@ class MoldView(tk.Frame):
         )
         self.frame_up.grid(row=0, column=0, pady=1, padx=0, sticky=NSEW)
         self.frame_down = Frame(
-            self.root, width=390, height=350, bg=self.co1, relief="flat"
+            self.root, width=650, height=350, bg=self.co1, relief="flat"
         )
         self.frame_down.grid(row=1, column=0, pady=1, padx=0, sticky=NSEW)
         titulo_frameup = Label(

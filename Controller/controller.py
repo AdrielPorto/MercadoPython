@@ -13,7 +13,10 @@ class Controller():
         clientes = ()
         print("Cadastrando cliente")
         for item, valor in entrada.items():
+            if(valor.get().strip() == ""):
+                return
             clientes += (valor.get(),)
+
         self.bd.insere_cliente(user=clientes)
 
     def excluirCliente(self, rowid):

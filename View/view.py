@@ -25,14 +25,12 @@ class MoldView(tk.Frame):
             % (
                 650,
                 350,
-                ((self.root.winfo_screenwidth() / 2) - 100),
+                ((self.root.winfo_screenwidth() / 2) - 300),
                 ((self.root.winfo_screenheight() / 2) - 200),
             )
         )
         self.root.configure(background=self.co0)
-        # self.root.resizable(False, False)
-        # self.root.focus_force()
-        # self.root.grab_set()
+
         self.init_frame(self.title_h1)
 
     def init_frame(self, title_h1):
@@ -41,8 +39,7 @@ class MoldView(tk.Frame):
         )
         self.frame_up.grid(row=0, column=0, pady=1, padx=0, sticky=N)
         self.frame_down = Frame(
-            self.root, width=650, height=350, bg=self.co0
-            , relief="flat"
+            self.root, width=650, height=350, bg=self.co0, relief="flat"
         )
         self.frame_down.grid(row=1, column=0, pady=1, padx=0, sticky=N)
         titulo_frameup = Label(
@@ -62,69 +59,64 @@ class View(MoldView):
         self.btn_name1 = btn_name1
         self.btn_name2 = btn_name2
         self.btn_name3 = btn_name3
+        self.botao_fechar = None
 
     def buttons(self, funcao1, funcao2, funcao3=None):
-        # self.btn_name1 = PhotoImage(file='View/imagens/btn-cadastrar.png', master=self.root)
-        botao_cadastrar = customtkinter.CTkButton(
-            master=self.frame_down,
-            # image=self.btn_name1,
+
+        botao_cadastrar = Button(
+            self.frame_down,
             text=self.btn_name1,
-            corner_radius=30,
-            width=250,
-            height=40,
-            text_font="Ubuntu 13 bold",
-            fg_color=self.co1,
-            text_color=self.co0,
-            hover_color=None,
+            width=20,
+            height=2,
+            anchor="center",
+            font="Ubuntu 10 bold",
+            bg=self.co0,
+            fg=self.co1,
             relief=RAISED,
             command=funcao1,
         )
-        botao_cadastrar.place(x=200, y=20)
-        # botao_cadastrar.pack()
 
-        botao_compra = customtkinter.CTkButton(
+        botao_cadastrar.place(x=80, y=20)
+
+        botao_compra = Button(
             self.frame_down,
             text=self.btn_name2,
-            corner_radius=30,
-            width=250,
-            height=40,
-            text_font="Ubuntu 13 bold",
-            fg_color=self.co1,
-            text_color=self.co0,
-            hover_color=None,
+            width=20,
+            height=2,
+            anchor="center",
+            font="Ubuntu 10 bold",
+            bg=self.co0,
+            fg=self.co1,
             relief=RAISED,
             command=funcao2,
-
         )
-        botao_compra.place(x=200, y=80)
+        botao_compra.place(x=80, y=80)
 
         if (funcao3 != None):
-            botao_financeiro = customtkinter.CTkButton(
+            botao_financeiro = Button(
                 self.frame_down,
                 text=self.btn_name3,
-                corner_radius=30,
-                width=250,
-                height=40,
-                text_font="Ubuntu 13 bold",
-                fg_color=self.co1,
-                text_color=self.co0,
-                hover_color=None,
+                width=20,
+                height=2,
+                anchor="center",
+                font="Ubuntu 10 bold",
+                bg=self.co0,
+                fg=self.co1,
                 relief=RAISED,
                 command=funcao3,
             )
-            botao_financeiro.place(x=200, y=140)
+            botao_financeiro.place(x=80, y=140)
 
-        botao_fechar = customtkinter.CTkButton(
+        self.botao_fechar = Button(
             self.frame_down,
             text="Fechar",
-            corner_radius=30,
-            width=250,
-            height=40,
-            text_font="Ubuntu 13 bold",
-            fg_color=self.co1,
-            text_color=self.co0,
-            hover_color=None,
+            width=20,
+            height=2,
+            anchor="center",
+            font="Ubuntu 10 bold",
+            bg=self.co0,
+            fg=self.co1,
             relief=RAISED,
             command=self.root.destroy,
         )
-        botao_fechar.place(x=200, y=200)
+        self.botao_fechar.place(x=80, y=200)

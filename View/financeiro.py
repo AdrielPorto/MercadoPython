@@ -1,4 +1,4 @@
-from view import *
+from View.view import *
 
 
 class FinanceiroView(View):
@@ -7,7 +7,7 @@ class FinanceiroView(View):
             btn_name1, btn_name2, btn_name3, title_h1=title_h1
         )
         self.buttons(self.informarPagamento, self.relatorio)
-        self.root.mainloop()
+        self.botao_fechar.config(command=self.root.destroy)
 
     def informarPagamento(self):
         print("Informando pagamento")

@@ -1,7 +1,7 @@
 from textwrap import fill
 import tkinter
 
-from view import *
+from View.view import *
 import tk_tools
 
 
@@ -17,12 +17,13 @@ class CompraView(View):
                      self.excluirCompra, self.buscarCompra)
         self.entradas = {}
         self.botaos = {}
-        self.root.mainloop()
+        self.botao_fechar.config(command=self.root.destroy)
 
     def informarCompra(self):
         self.init_frame('Informar Compra')  # Inicializa o frame
         self.criar_dropdown()  # Cria as entradas
-        entry_grid = tk_tools.EntryGrid(self.root, 4, ['QTD', 'ITEM', 'DESCRICAO', 'VALOR'])
+        entry_grid = tk_tools.EntryGrid(
+            self.root, 4, ['QTD', 'ITEM', 'DESCRICAO', 'VALOR'])
         entry_grid.place(x=50, y=110)
         for i in range(0, 10):
             entry_grid.add_row()

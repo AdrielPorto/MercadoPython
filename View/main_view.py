@@ -1,7 +1,7 @@
-from View.view import *
-from View.compra import *
-from View.financeiro import *
-from View.cadastrar import *
+from view import *
+from compra import *
+from financeiro import *
+from cadastrar import *
 
 
 class MainView(View):

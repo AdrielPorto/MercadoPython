@@ -1,4 +1,4 @@
-from View.view import *
+from view import *
 
 
 class CadastrarView(View):
@@ -13,17 +13,18 @@ class CadastrarView(View):
         self.botaos = {}
         self.buttons(self.inserirCliente,
                      self.excluirCliente, self.buscarCliente)
+
         self.root.mainloop()
 
     def inserirCliente(self):
         self.init_frame('Inserindo cliente')  # Inicializa o frame
-        self.criar_entrada('Nome', 80, 60, tk.StringVar)  # Cria as entradas
-        self.criar_entrada('Local', 120, 60, tk.StringVar)  # Cria as entradas
-        self.criar_entrada('E-mail', 160, 60, tk.StringVar)  # Cria as entradas
-        self.criar_entrada('DDD + Celular', 200, 100,
+        self.criar_entrada('Nome', 60, 10, 85, tk.StringVar)  # Cria as entradas
+        self.criar_entrada('Local', 115, 10, 140, tk.StringVar)  # Cria as entradas
+        self.criar_entrada('E-mail', 170, 10, 195, tk.StringVar)  # Cria as entradas
+        self.criar_entrada('DDD + Celular', 225, 10, 250,
                            tk.IntVar)  # Cria as entradas
-        self.criar_botao('CANCELAR', 240, 10, self.cancelar)
-        self.criar_botao('SALVAR', 240, 180, None)
+        self.criar_botao('CANCELAR', 250, 10, self.cancelar)
+        self.criar_botao('SALVAR', 250, 180, None)
 
     def excluirCliente(self):
         self.init_frame('Excluindo cliente')  # Inicializa o frame
@@ -37,24 +38,23 @@ class CadastrarView(View):
         self.criar_botao('CANCELAR', 240, 10, self.cancelar)
         self.criar_botao('BUSCAR', 240, 180, self.busca)
 
-    def criar_entrada(self, label, posicaoY, posicaoX, textvar):
-        label = Label(self.root, text=label)
+    def criar_entrada(self, label, posicaoY, posicaoX, posicaoYEntry, textvar):
+        label = Label(self.root, text=label, bg=self.co0, fg=self.co1, font="Ubuntu 12 bold")
         label.place(x=10, y=posicaoY)
         self.entradas[label] = Entry(
-            self.root, textvariable=textvar, width=30)
-        self.entradas[label].place(x=posicaoX, y=posicaoY)
+            self.root, textvariable=textvar, width=30, bd=0, font="arial 12")
+        self.entradas[label].place(x=posicaoX, y=posicaoYEntry)
         print(self.entradas)
 
     def criar_botao(self, nome, posicaoY, posicaoX, funcao):
-        botao = Button(
+        botao = customtkinter.CTkButton(
             self.frame_down,
             text=nome,
-            width=15,
-            height=1,
-            anchor="center",
-            font="Ubuntu 10 bold",
-            bg=self.co0,
-            fg=self.co1,
+            width=150,
+            height=10,
+            text_font="Ubuntu 10 bold",
+            fg_color=self.co1,
+            hover_color=None,
             relief=RAISED,
             command=funcao,
         )
@@ -84,32 +84,33 @@ class CadastrarView(View):
 
     def area_busca(self):
         self.__frame_dropdown = LabelFrame(
-            self.root, height=300, width=280, text="::::::::::::::: Cliente buscado :::::::::::::::")
-        self.__frame_dropdown.place(x=10, y=120)
+            self.root, font="Tahoma 13 bold", height=300, width=280,
+            text="::::::::::::::: Cliente buscado :::::::::::::::", bg=self.co1, fg=self.co0)
+        self.__frame_dropdown.place(x=10, y=120, height=150, width=380)
 
-        label_id = Label(self.__frame_dropdown, text="ID: ",
+        label_id = Label(self.__frame_dropdown, text="ID: ", bg=self.co1,
                          width=10, anchor='w').grid(row=1, column=1)
-        id = Label(self.__frame_dropdown, text="#01",
+        id = Label(self.__frame_dropdown, text="#01", bg=self.co1,
                    width=30, anchor='w').grid(row=1, column=2)
 
-        label_nome = Label(self.__frame_dropdown, text="Nome: ",
+        label_nome = Label(self.__frame_dropdown, text="Nome: ", bg=self.co1,
                            width=10, anchor="w").grid(row=2, column=1)
-        nome = Label(self.__frame_dropdown, text="Vinicius de Abreu Massena",
+        nome = Label(self.__frame_dropdown, text="Vinicius de Abreu Massena", bg=self.co1,
                      width=30, anchor='w').grid(row=2, column=2)
 
-        label_local = Label(self.__frame_dropdown, text="Local: ",
+        label_local = Label(self.__frame_dropdown, text="Local: ", bg=self.co1,
                             width=10, anchor="w").grid(row=3, column=1)
-        local = Label(self.__frame_dropdown, text="Rio de Janeiro",
+        local = Label(self.__frame_dropdown, text="Rio de Janeiro", bg=self.co1,
 
                       width=30, anchor='w').grid(row=3, column=2)
-        label_email = Label(self.__frame_dropdown, text="E-mail: ",
+        label_email = Label(self.__frame_dropdown, text="E-mail: ", bg=self.co1,
                             width=10, anchor="w").grid(row=4, column=1)
-        email = Label(self.__frame_dropdown, text="vinicius.massena@soulasalle.com.br",
+        email = Label(self.__frame_dropdown, text="vinicius.massena@soulasalle.com.br", bg=self.co1,
                       width=30, anchor='w').grid(row=4, column=2)
 
-        label_celular = Label(self.__frame_dropdown, text="Celular: ",
+        label_celular = Label(self.__frame_dropdown, text="Celular: ", bg=self.co1,
                               width=10, anchor="w").grid(row=5, column=1)
-        celular = Label(self.__frame_dropdown, text="21 99999-9999",
+        celular = Label(self.__frame_dropdown, text="21 99999-9999", bg=self.co1,
                         width=30, anchor='w').grid(row=5, column=2)
 
         self.__frame_dropdown.pack_forget()
@@ -119,4 +120,3 @@ class CadastrarView(View):
         print(valor)
         if (valor):
             self.area_busca()
-

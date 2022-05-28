@@ -1,4 +1,4 @@
-from View.view import *
+from view import *
 
 
 class FinanceiroView(View):

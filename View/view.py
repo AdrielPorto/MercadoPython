@@ -2,9 +2,10 @@ try:
     import Tkinter as tk
 except:
     import tkinter as tk
+from logging import root
 from tkinter import ttk
 from tkinter import *
-
+import customtkinter
 
 
 class MoldView(tk.Frame):
@@ -22,34 +23,34 @@ class MoldView(tk.Frame):
         self.root.geometry(
             "%dx%d+%d+%d"
             % (
+                650,
                 350,
-                350,
-                ((self.root.winfo_screenwidth() / 2) - 100),
+                ((self.root.winfo_screenwidth() / 2) - 300),
                 ((self.root.winfo_screenheight() / 2) - 200),
             )
         )
         self.root.configure(background=self.co0)
-        self.root.resizable(False, False)
+
         self.init_frame(self.title_h1)
 
     def init_frame(self, title_h1):
         self.frame_up = Frame(
-            self.root, width=310, height=50, bg=self.co1, relief="flat"
+            self.root, width=650, height=50, bg=self.co1, relief="flat"
         )
-        self.frame_up.grid(row=0, column=0, pady=1, padx=0, sticky=NSEW)
+        self.frame_up.grid(row=0, column=0, pady=1, padx=0, sticky=N)
         self.frame_down = Frame(
-            self.root, width=390, height=350, bg=self.co1, relief="flat"
+            self.root, width=650, height=350, bg=self.co0, relief="flat"
         )
-        self.frame_down.grid(row=1, column=0, pady=1, padx=0, sticky=NSEW)
+        self.frame_down.grid(row=1, column=0, pady=1, padx=0, sticky=N)
         titulo_frameup = Label(
             self.frame_up,
             text=title_h1,
-            anchor=NE,
+            anchor=N,
             font=("Ubuntu 18"),
             bg=self.co1,
             fg=self.co2,
         )
-        titulo_frameup.place(x=45, y=7)
+        titulo_frameup.place(x=200, y=7)
 
 
 class View(MoldView):
@@ -58,8 +59,10 @@ class View(MoldView):
         self.btn_name1 = btn_name1
         self.btn_name2 = btn_name2
         self.btn_name3 = btn_name3
+        self.botao_fechar = None
 
     def buttons(self, funcao1, funcao2, funcao3=None):
+
         botao_cadastrar = Button(
             self.frame_down,
             text=self.btn_name1,
@@ -104,7 +107,7 @@ class View(MoldView):
             )
             botao_financeiro.place(x=80, y=140)
 
-        botao_fechar = Button(
+        self.botao_fechar = Button(
             self.frame_down,
             text="Fechar",
             width=20,
@@ -116,7 +119,4 @@ class View(MoldView):
             relief=RAISED,
             command=self.root.destroy,
         )
-        botao_fechar.place(x=80, y=200)
-
-
-
+        self.botao_fechar.place(x=80, y=200)

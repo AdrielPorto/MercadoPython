@@ -8,6 +8,38 @@ class ConectBD:
         self.c = self.conectar.cursor()
         self.cria_cliente()
         self.cria_produtos()
+        self.cria_financeiro()
+
+    def cria_financeiro(self):
+        try:
+            self.c.execute(
+                ''' CREATE TABLE IF NOT EXISTS FINANCEIRO
+                (ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                DATA TEXT,
+                DATA_1 TEXT,
+                DATA_2 TEXT,
+                ID_CLIENTE,
+                FOREIGN KEY(ID_CLIENTE) REFERENCES CLIENTE(ID)
+                )''')
+        except Exception as e:
+            return f'Falha o criar tabela: {e}'
+        else:
+            return 'Tabela criada com sucesso'
+
+    def insere_financa(self):
+        try:
+            self.c.execute(
+                '''INSERT INTO FINANCEIRO(
+                    DATA,
+                    DATA_1,
+                    DATA_2)
+                    VALUES (?,?,?)''')
+
+        except Exception as e:
+            return f'Falaha ao inserir dados:{e}'
+        else:
+            self.conectar.commit()
+            return 'Dados inseridos com sucesso!'
 
     def cria_cliente(self):
 
@@ -18,10 +50,8 @@ class ConectBD:
                 NOME TEXT NOT NULL,
                 LOCAL TEXT NOT NULL,
                 EMAIL TEXT NOT NULL,
-                CONTATO TEXT NOT NULL,
-                CONSTRAINT FK_CLIENTE 
-                FOREIGN KEY(ID) 
-                REFERENCES INFOCOMPRA(ID_PRODUTO))''')
+                CONTATO TEXT NOT NULL
+               )''')
         except Exception as e:
             print(f'Falha ao criar tabela: {e}')
         else:
@@ -29,7 +59,8 @@ class ConectBD:
 
     def insere_cliente(self, user):
         try:
-            self.c.execute('''INSERT INTO CLIENTE (NOME,LOCAL,EMAIL,CONTATO) VALUES (?, ?, ?, ?)''', user)
+            self.c.execute(
+                '''INSERT INTO CLIENTE (NOME,LOCAL,EMAIL,CONTATO) VALUES (?, ?, ?, ?)''', user)
         except Exception as e:
             print(f'Falha ao inserir dados: {e}')
             self.conectar.rollback()
@@ -38,8 +69,14 @@ class ConectBD:
             self.conectar.commit()
             return 'Dados inseridos com sucesso!'
 
-    def Get_cliente(self):
+    def Get_AllCliente(self):
         return self.c.execute(''' SELECT * FROM CLIENTE''').fetchall()
+
+    def Get_Cliente(self, rowid):
+        return self.c.execute(''' SELECT * FROM CLIENTE WHERE rowid=?''', (rowid,)).fetchone()
+
+    def Get_nome_id(self):
+        return self.c.execute(''' SELECT ID, Nome FROM CLIENTE ''').fetchall()
 
     def remove_cliente(self, rowid):
         try:
@@ -60,32 +97,33 @@ class ConectBD:
                 DESCRICAO TEXT,
                 PRECO REAL,
                 TOTAL_PRODUTO NUMERIC,
-                PRECO_TOTAL INTEGER,
                 FORMA_PGT TEXT,
                 QNTD_PARCELA INTEGER,
                 VL_PARCELA REAL,
-                CONSTRAINT FK_PRODUTO 
-                FOREIGN KEY(ID_PRODUTO) 
-                REFERENCES CLIENTE(ID))''')
+                ID_CLIENTE INTEGER,
+                FOREIGN KEY(ID_CLIENTE) REFERENCES CLIENTE(ID)
+                )''')
         except Exception as e:
             print(f'Falha ao criar tabela: {e}')
         else:
             return 'Tabela criada com sucesso'
 
-    def insere_produto(self, user):
+    def insere_produto(self, produto):
 
         try:
             self.c.execute(
                 '''INSERT INTO INFOCOMPRA
-                (QUANTIDADE_PRODUTO,
+                (
+                QUANTIDADE_PRODUTO,
                 DESCRICAO,
                 PRECO,
                 TOTAL_PRODUTO,
-                PRECO_TOTAL,
                 FORMA_PGT,
                 QNTD_PARCELA,
-                VL_PARCELA) 
-                VALUES (?,?,?,?,?,?,?,?)''', user)
+                VL_PARCELA,
+                ID_CLIENTE
+                ) 
+                VALUES (?,?,?,?,?,?,?,?)''', produto)
 
         except Exception as e:
             print(f'Falha ao inserir dados: {e}')
@@ -99,7 +137,8 @@ class ConectBD:
 
     def remove_produto(self, rowid):
         try:
-            self.c.execute('''DELETE FROM INFOCOMPRA WHERE rowid=?''', (rowid,))
+            self.c.execute(
+                '''DELETE FROM INFOCOMPRA WHERE rowid=?''', (rowid,))
         except Exception as e:
             print(f'Falha ao remover valores: {e}')
             self.conectar.rollback()
@@ -107,23 +146,27 @@ class ConectBD:
             self.conectar.commit()
             return 'Dados removidos com sucesso!!!!'
 
-    def join_tabela(self):
-        self.c.execute('''SELECT ID,NOME,
-                                 ID_PRODUTO,
-                                 DESCRICAO
-                          FROM CLIENTE
-                          INNER JOIN INFOCOMPRA
-                          ON CLIENTE.ID = INFOCOMPRA.ID_PRODUTO;''')
+    def join_produto(self, rowid):
+        self.c.execute('''
+                    SELECT DISTINCT C.ID,
+                   C.NOME,
+                    I.ID_PRODUTO,
+                   I.DESCRICAO,
+                   I.FORMA_PGT,
+                   I.QNTD_PARCELA,
+                   I.PRECO,
+                   F.DATA,
+                   F.DATA_1,
+                   F.DATA_2,
+                   I.QUANTIDADE_PRODUTO,
+                   I.TOTAL_PRODUTO
+            FROM CLIENTE as C
+                     LEFT JOIN INFOCOMPRA as I
+                                ON I.ID_PRODUTO = C.ID
+                     LEFT JOIN FINANCEIRO as F
+                                ON F.ID = C.ID
+            WHERE c.ID = rowid=?;''', (rowid,))
+
         resultado = self.c.fetchall()
         for row in resultado:
             print(row)
-
-
-if __name__ == '__main__':
-    banco = ConectBD()
-    banco.join_tabela()
-
-# cliente = ("thamires", "FACULDADE", "renanmix09@gmail.com", '111111111')
-# banco.insere_cliente(user=cliente)
-# produto = (2.5, 'nescau', 40.60, 5, 50.00, 'Prazo', 3, 12.50)
-# banco.insere_produto(user=produto)

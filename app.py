@@ -2,6 +2,7 @@ from View.view import *
 from View.compra import *
 from View.financeiro import *
 from View.cadastrar import *
+from Controller.controller import *
 
 
 class MainView(View):
@@ -10,6 +11,8 @@ class MainView(View):
             btn_name1, btn_name2, btn_name3, title_h1=title_h1
         )
         self.buttons(self.cadastrar, self.comprar, self.financeiro)
+        self.botao_fechar.config(command=self.root.destroy)
+
         self.root.mainloop()
 
     def cadastrar(self):
